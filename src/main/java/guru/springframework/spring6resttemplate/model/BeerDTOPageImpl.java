@@ -10,14 +10,14 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @JsonIgnoreProperties(value = "pageable", ignoreUnknown = true)
-public class RestPageImpl extends PageImpl<BeerDTO> {
+public class BeerDTOPageImpl extends PageImpl<BeerDTO> {
 
-    public RestPageImpl(List<BeerDTO> content, Pageable pageable, long total) {
+    public BeerDTOPageImpl(List<BeerDTO> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }
 
     @JsonCreator
-    public RestPageImpl(
+    public BeerDTOPageImpl(
             @JsonProperty("content") List<BeerDTO> content,
             @JsonProperty("page") PageDetails pageDetails
     ) {
