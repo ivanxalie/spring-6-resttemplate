@@ -38,20 +38,15 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @Import(RestTemplateBuilderConfig.class)
 class BeerClientMockTest {
     static final String URL = "http://localhost:8080";
-
+    private static final String TOKEN = "Basic dXNlcjpwYXNzd29yZA==";
     MockRestServiceServer server;
-
     @Autowired
     RestTemplateBuilder builder;
-
     @Autowired
     ObjectMapper mapper;
-
     BeerClient beerClient;
-
     BeerDTO dto;
     String response;
-
     @Mock
     RestTemplateBuilder mockBuilder = new RestTemplateBuilder(new MockServerRestTemplateCustomizer());
 
@@ -74,6 +69,7 @@ class BeerClientMockTest {
         String response = mapper.writeValueAsString(createPage());
         server
                 .expect(method(GET))
+                .andExpect(header("Authorization", TOKEN))
                 .andExpect(requestTo(URL + BEER_PATH))
                 .andRespond(withSuccess(response, APPLICATION_JSON));
 
@@ -113,6 +109,7 @@ class BeerClientMockTest {
         server
                 .expect(method(GET))
                 .andExpect(requestTo(uri))
+                .andExpect(header("Authorization", TOKEN))
                 .andExpect(queryParam("name", "ALE"))
                 .andRespond(withSuccess(response, APPLICATION_JSON));
 
@@ -128,8 +125,7 @@ class BeerClientMockTest {
         mockGetOperation();
 
         BeerDTO responseDto = beerClient.getById(dto.getId());
-        assertThat(responseDto).isNotNull();
-        assertThat(responseDto).isEqualTo(dto);
+        assertThat(responseDto).isNotNull().isEqualTo(dto);
 
         server.verify();
     }
@@ -137,6 +133,7 @@ class BeerClientMockTest {
     private void mockGetOperation() {
         server
                 .expect(method(GET))
+                .andExpect(header("Authorization", TOKEN))
                 .andExpect(requestToUriTemplate(URL + BEER_BY_ID, dto.getId()))
                 .andRespond(withSuccess(response, APPLICATION_JSON));
     }
@@ -147,6 +144,7 @@ class BeerClientMockTest {
 
         server
                 .expect(method(POST))
+                .andExpect(header("Authorization", TOKEN))
                 .andExpect(requestTo(URL + BEER_PATH))
                 .andRespond(withCreatedEntity(uri));
 
@@ -163,6 +161,7 @@ class BeerClientMockTest {
     void updateBeer() {
         server
                 .expect(method(PUT))
+                .andExpect(header("Authorization", TOKEN))
                 .andExpect(requestToUriTemplate(URL + BEER_BY_ID, dto.getId()))
                 .andRespond(withNoContent());
 
@@ -179,6 +178,7 @@ class BeerClientMockTest {
     void delete() {
         server
                 .expect(method(DELETE))
+                .andExpect(header("Authorization", TOKEN))
                 .andExpect(requestToUriTemplate(URL + BEER_BY_ID, dto.getId()))
                 .andRespond(withNoContent());
 
@@ -190,6 +190,7 @@ class BeerClientMockTest {
     void delete404() {
         server
                 .expect(method(DELETE))
+                .andExpect(header("Authorization", TOKEN))
                 .andExpect(requestToUriTemplate(URL + BEER_BY_ID, dto.getId()))
                 .andRespond(withResourceNotFound());
 
