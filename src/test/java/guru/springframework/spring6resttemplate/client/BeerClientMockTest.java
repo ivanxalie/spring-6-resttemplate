@@ -42,11 +42,14 @@ class BeerClientMockTest {
     MockRestServiceServer server;
     @Autowired
     RestTemplateBuilder builder;
+
     @Autowired
     ObjectMapper mapper;
+
     BeerClient beerClient;
     BeerDTO dto;
     String response;
+
     @Mock
     RestTemplateBuilder mockBuilder = new RestTemplateBuilder(new MockServerRestTemplateCustomizer());
 
