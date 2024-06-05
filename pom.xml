@@ -18,6 +18,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <logbook.version>3.8.0</logbook.version>
     </properties>
 
     <dependencies>
@@ -37,6 +38,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>logbook-spring</artifactId>
+            <version>${logbook.version}</version>
         </dependency>
 
         <dependency>
